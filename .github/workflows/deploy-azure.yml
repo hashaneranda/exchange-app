@@ -2,6 +2,15 @@ name: deploy-infrastructure
 on:
   workflow_dispatch:
 
+# Environment variables available to all jobs and steps in this workflow
+env:
+  REGISTRY_NAME: { registry-name }
+  CLUSTER_NAME: exchange-cluster
+  CLUSTER_RESOURCE_GROUP: cloudcw
+  NAMESPACE: dev
+  SECRET: { secret-name }
+  APP_NAME: { app-name }
+
 permissions:
   id-token: write
   contents: read
@@ -20,11 +29,29 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: "Run scripts"
-        run: |
-          ls -l 
-          cd $GITHUB_WORKSPACE/scripts
-          ls -l 
-          chmod +x ./deploy.sh
-          ./deploy.sh ${{ secrets.RESOURCE_GROUP }} ${GITHUB_RUN_ID} "ghcr.io/${{ github.repository_owner }}/container-apps"
-        shell: bash
+        # Set the target Azure Kubernetes Service (AKS) cluster.
+      - uses: azure/aks-set-context@v1
+        name: "Set the target Azure Kubernetes Service (AKS) cluster."
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          cluster-name: ${{ env.CLUSTER_NAME }}
+          resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
+
+        # Create namespace if doesn't exist
+      - run: |
+          kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -
+
+        # Deploy app to AKS
+      - uses: azure/k8s-deploy@v1
+        name: "Deploy app to AKS"
+        with:
+          manifests: |
+            ${{ github.workspace }}/manifests/deployment.yaml
+            ${{ github.workspace }}/manifests/service.yaml
+          images: |
+            ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
+          imagepullsecrets: |
+            ${{ env.SECRET }}
+          namespace: ${{ env.NAMESPACE }}
