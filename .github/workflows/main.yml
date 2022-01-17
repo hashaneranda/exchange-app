@@ -7,8 +7,11 @@ jobs:
   build-auth:
     uses: hashaneranda/exchange-app/.github/workflows/build-auth.yml@dev
   build-exchange:
+    needs: build-auth
     uses: hashaneranda/exchange-app/.github/workflows/build-exchange.yml@dev
   build-gateway:
+    needs: build-exchange
     uses: hashaneranda/exchange-app/.github/workflows/build-gateway.yml@dev
   deploy:
+    needs: build-gateway
     uses: hashaneranda/exchange-app/.github/workflows/deploy-azure.yml@dev
