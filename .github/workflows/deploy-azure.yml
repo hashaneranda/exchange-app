@@ -9,7 +9,6 @@ on:
 env:
   CLUSTER_NAME: exchange-cluster
   CLUSTER_RESOURCE_GROUP: cloudcw
-  NAMESPACE: $(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
 
 permissions:
   id-token: write
@@ -39,7 +38,7 @@ jobs:
 
         # Create namespace if doesn't exist
       - run: |
-          kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -
+          kubectl create namespace $(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,') --dry-run=client -o json | kubectl apply -f -
 
         # Create env
       - run: |
@@ -56,4 +55,4 @@ jobs:
             ${{ github.workspace }}/deployment/ingress.yaml
           images: |
             ghcr.io/${{ github.repository_owner }}/container-apps
-          namespace: ${{ env.NAMESPACE }}
+          namespace: $(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
