@@ -1,15 +1,12 @@
-name: deploy-infrastructure
+name: deploy-AKS
 on:
   workflow_dispatch:
 
 # Environment variables available to all jobs and steps in this workflow
 env:
-  REGISTRY_NAME: { registry-name }
   CLUSTER_NAME: exchange-cluster
   CLUSTER_RESOURCE_GROUP: cloudcw
   NAMESPACE: dev
-  SECRET: { secret-name }
-  APP_NAME: { app-name }
 
 permissions:
   id-token: write
@@ -43,15 +40,19 @@ jobs:
       - run: |
           kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -
 
+        # Create env
+      - run: |
+          kubectl create secret generic exchange-secret --from-env-file=${{ github.workspace }}/deployment/env.txt
+
         # Deploy app to AKS
       - uses: azure/k8s-deploy@v1
         name: "Deploy app to AKS"
         with:
           manifests: |
-            ${{ github.workspace }}/manifests/deployment.yaml
-            ${{ github.workspace }}/manifests/service.yaml
+            ${{ github.workspace }}/deployment/auth-deployment.yaml
+            ${{ github.workspace }}/deployment/exchange-deployment.yaml
+            ${{ github.workspace }}/deployment/gateway-deployment.yaml
+            ${{ github.workspace }}/deployment/ingress.yaml
           images: |
-            ${{ env.REGISTRY_NAME }}.azurecr.io/${{ env.APP_NAME }}:${{ github.sha }}
-          imagepullsecrets: |
-            ${{ env.SECRET }}
+            ghcr.io/${{ github.repository_owner }}/container-apps
           namespace: ${{ env.NAMESPACE }}
