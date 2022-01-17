@@ -5,9 +5,9 @@ on:
       - dev
 jobs:
   build:
-    uses: ./.github/workflows/build-auth.yml@dev
-    uses: ./.github/workflows/build-exchange.yml@dev
-    uses: ./.github/workflows/build-gateway.yml@dev
+    uses: ${{ github.workspace }}/.github/workflows/build-auth.yml@dev
+    uses: ${{ github.workspace }}/.github/workflows/build-exchange.yml@dev
+    uses: ${{ github.workspace }}/.github/workflows/build-gateway.yml@dev
   deploy:
     needs: build
-    uses: ./.github/workflows/deploy-azure.yml@dev
+    uses: ${{ github.workspace }}/.github/workflows/deploy-azure.yml@dev
