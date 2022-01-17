@@ -15,5 +15,7 @@ jobs:
   deploy:
     needs: build-gateway
     uses: hashaneranda/exchange-app/.github/workflows/deploy-azure.yml@main
+    with:
+      NAMESPACE: main
     secrets:
       AZURE_CREDENTIALS: ${{secrets.AZURE_CREDENTIALS}}

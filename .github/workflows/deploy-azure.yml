@@ -4,6 +4,10 @@ name: deploy-AKS
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_call:
+    inputs:
+      NAMESPACE:
+        required: true
+        type: string
     secrets:
       AZURE_CREDENTIALS:
         required: true
@@ -35,7 +39,7 @@ jobs:
 
         # Create namespace if doesn't exist
       - run: |
-          kubectl create namespace $(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,') --dry-run=client -o json | kubectl apply -f -
+          kubectl create namespace ${{ NAMESPACE }} --dry-run=client -o json | kubectl apply -f -
 
         # Create env
       - run: |
@@ -52,4 +56,4 @@ jobs:
             ${{ github.workspace }}/deployment/ingress.yaml
           images: |
             ghcr.io/${{ github.repository_owner }}/container-apps
-          namespace: $(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          namespace: ${{ NAMESPACE }}
