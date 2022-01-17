@@ -5,10 +5,14 @@ on:
       - dev
 jobs:
   build-auth:
+    runs-on: ubuntu-latest
     uses: ${{ github.workspace }}/.github/workflows/build-auth.yml@dev
   build-exchange:
+    runs-on: ubuntu-latest
     uses: ${{ github.workspace }}/.github/workflows/build-exchange.yml@dev
   build-gateway:
+    runs-on: ubuntu-latest
     uses: ${{ github.workspace }}/.github/workflows/build-gateway.yml@dev
   deploy:
+    runs-on: ubuntu-latest
     uses: ${{ github.workspace }}/.github/workflows/deploy-azure.yml@dev
