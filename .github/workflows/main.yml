@@ -7,11 +7,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/build-auth.yml@$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-      - uses: ./.github/workflows/build-exchange.yml@$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-      - uses: ./.github/workflows/build-gateway.yml@$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+      - uses: ./.github/workflows/build-auth.yml@dev
+      - uses: ./.github/workflows/build-exchange.yml@dev
+      - uses: ./.github/workflows/build-gateway.yml@dev
   deploy:
     needs: build
-    runs-on: ubuntu-latest
     steps:
-      - uses: ./.github/workflows/deploy-azure.yml@$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+      - uses: ./.github/workflows/deploy-azure.yml@dev
