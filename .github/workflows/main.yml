@@ -4,11 +4,14 @@ on:
     branches:
       - dev
 jobs:
-  call-workflow-auth:
-    uses: ${{ github.workspace }}/.github/workflows/build-auth.yml@$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-  call-workflow-exchange:
-    uses: ${{ github.workspace }}/.github/workflows/build-exchange.yml@$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-  call-workflow-gateway:
-    uses: ${{ github.workspace }}/.github/workflows/build-gateway.yml@$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-  call-workflow-deploy:
-    uses: ${{ github.workspace }}/.github/workflows/deploy-azure.yml@$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: .${{ github.workspace }}/.github/workflows/build-auth.yml@${{ github.ref }}
+      - run: .${{ github.workspace }}/.github/workflows/build-exchange.yml@${{ github.ref }}
+      - run: .${{ github.workspace }}/.github/workflows/build-gateway.yml@${{ github.ref }}
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - run: ${{ github.workspace }}/.github/workflows/deploy-azure.yml@${{ github.ref }}
