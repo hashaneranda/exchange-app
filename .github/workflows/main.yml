@@ -5,10 +5,10 @@ on:
       - dev
 jobs:
   call-workflow-auth:
-    uses: ${{ github.workspace }}/.github/workflows/build-auth.yml
+    uses: ${{ github.workspace }}/.github/workflows/build-auth.yml@${GITHUB_REF##*/}
   call-workflow-exchange:
-    uses: ${{ github.workspace }}/.github/workflows/build-exchange.yml
+    uses: ${{ github.workspace }}/.github/workflows/build-exchange.yml@${GITHUB_REF##*/}
   call-workflow-gateway:
-    uses: ${{ github.workspace }}/.github/workflows/build-gateway.yml
+    uses: ${{ github.workspace }}/.github/workflows/build-gateway.yml@${GITHUB_REF##*/}
   call-workflow-deploy:
-    uses: ${{ github.workspace }}/.github/workflows/deploy-azure.yml
+    uses: ${{ github.workspace }}/.github/workflows/deploy-azure.yml@${GITHUB_REF##*/}

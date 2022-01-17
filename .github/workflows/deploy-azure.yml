@@ -6,7 +6,7 @@ on:
 env:
   CLUSTER_NAME: exchange-cluster
   CLUSTER_RESOURCE_GROUP: cloudcw
-  NAMESPACE: dev
+  NAMESPACE: ${GITHUB_REF##*/}
 
 permissions:
   id-token: write
