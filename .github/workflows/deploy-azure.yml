@@ -6,7 +6,7 @@ on:
 env:
   CLUSTER_NAME: exchange-cluster
   CLUSTER_RESOURCE_GROUP: cloudcw
-  NAMESPACE: ${{ github.ref }}
+  NAMESPACE: $(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
 
 permissions:
   id-token: write
