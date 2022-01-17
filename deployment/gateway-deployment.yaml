@@ -5,6 +5,7 @@ metadata:
   labels:
     app: gateway
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: gateway
@@ -23,15 +24,14 @@ spec:
           ports:
             - containerPort: 3000
           imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 100m
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
       serviceAccountName: default
-      replicas: 1
-      resources:
-        limits:
-          cpu: 100m
-          memory: 200Mi
-        requests:
-          cpu: 100m
-          memory: 100Mi
 
 ---
 apiVersion: v1

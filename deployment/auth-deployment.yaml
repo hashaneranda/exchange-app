@@ -5,6 +5,7 @@ metadata:
   labels:
     app: auth
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app: auth
@@ -23,15 +24,14 @@ spec:
           ports:
             - containerPort: 8001
           imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 100m
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
       serviceAccountName: default
-      replicas: 1
-      resources:
-        limits:
-          cpu: 100m
-          memory: 200Mi
-        requests:
-          cpu: 100m
-          memory: 100Mi
 
 ---
 apiVersion: v1
