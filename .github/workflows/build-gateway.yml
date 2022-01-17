@@ -1,5 +1,5 @@
 # This is a basic workflow to help you get started with Actions
-name: build-auth
+name: build-gateway
 
 # Controls when the action will run.
 on:
@@ -8,10 +8,10 @@ on:
 
 defaults:
   run:
-    working-directory: service-auth
+    working-directory: service-gateway
 
 env:
-  IMAGE_NAME: exchange/auth
+  IMAGE_NAME: exchange/gateway
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
