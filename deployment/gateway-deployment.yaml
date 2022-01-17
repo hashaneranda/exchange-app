@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway
+  labels:
+    app: gateway
+spec:
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: microservice/exchange/gateway
+          envFrom:
+            - secretRef:
+                name: excahnge-secret
+          ports:
+            - containerPort: 3000
+          imagePullPolicy: Always
+      serviceAccountName: default
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: exchange-gateway
+spec:
+  selector:
+    app: gateway
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 3000

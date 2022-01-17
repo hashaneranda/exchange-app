@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exchange
+  labels:
+    app: exchange
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: exchange
+  template:
+    metadata:
+      labels:
+        app: exchange
+    spec:
+      containers:
+        - name: exchange
+          image: microservice/exchange/exchange
+          envFrom:
+            - secretRef:
+                name: excahnge-secret
+          ports:
+            - containerPort: 8002
+          imagePullPolicy: Always
+      serviceAccountName: default
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: exchange-exchange
+spec:
+  selector:
+    app: exchange
+  ports:
+    - protocol: TCP
+      port: 8002
+      targetPort: 8002
