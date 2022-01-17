@@ -5,11 +5,9 @@ on:
       - dev
 jobs:
   build:
-    steps:
-      - uses: ./.github/workflows/build-auth.yml@dev
-      - uses: ./.github/workflows/build-exchange.yml@dev
-      - uses: ./.github/workflows/build-gateway.yml@dev
+    - uses: ./.github/workflows/build-auth.yml@dev
+    - uses: ./.github/workflows/build-exchange.yml@dev
+    - uses: ./.github/workflows/build-gateway.yml@dev
   deploy:
-    needs: build
-    steps:
-      - uses: ./.github/workflows/deploy-azure.yml@dev
+    - needs: build
+      uses: ./.github/workflows/deploy-azure.yml@dev
