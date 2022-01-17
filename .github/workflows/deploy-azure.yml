@@ -43,7 +43,7 @@ jobs:
 
         # Create env
       - run: |
-          kubectl create secret generic exchange-secret --from-env-file=${{ github.workspace }}/deployment/env.txt
+          kubectl create secret generic exchange-secret --from-env-file=${{ github.workspace }}/deployment/env.txt  --from-env-file=env.txt  --dry-run=client -o json
 
         # Deploy app to AKS
       - uses: azure/k8s-deploy@v1
