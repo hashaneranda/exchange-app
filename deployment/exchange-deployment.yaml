@@ -14,12 +14,13 @@ spec:
       labels:
         app: exchange
     spec:
+      hostname: exchange
       containers:
         - name: exchange
-          image: microservice/exchange/exchange
+          image: ghcr.io/hashaneranda/container-apps/exchange/exchange:main
           envFrom:
             - secretRef:
-                name: excahnge-secret
+                name: exchange-secret
           ports:
             - containerPort: 8002
           imagePullPolicy: Always

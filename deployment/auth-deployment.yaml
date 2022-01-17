@@ -13,12 +13,13 @@ spec:
       labels:
         app: auth
     spec:
+      hostname: auth
       containers:
         - name: auth
-          image: microservice/exchange/auth
+          image: ghcr.io/hashaneranda/container-apps/exchange/auth:main
           envFrom:
             - secretRef:
-                name: excahnge-secret
+                name: exchange-secret
           ports:
             - containerPort: 8001
           imagePullPolicy: Always

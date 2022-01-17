@@ -13,12 +13,13 @@ spec:
       labels:
         app: gateway
     spec:
+      hostname: gateway
       containers:
         - name: gateway
-          image: microservice/exchange/gateway
+          image: ghcr.io/hashaneranda/container-apps/exchange/gateway:main
           envFrom:
             - secretRef:
-                name: excahnge-secret
+                name: exchange-secret
           ports:
             - containerPort: 3000
           imagePullPolicy: Always
