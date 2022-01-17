@@ -1,4 +1,4 @@
-name: Main Workflow
+name: Dev Workflow
 on:
   push:
     branches:
@@ -15,3 +15,5 @@ jobs:
   deploy:
     needs: build-gateway
     uses: hashaneranda/exchange-app/.github/workflows/deploy-azure.yml@dev
+    secrets:
+      AZURE_CREDENTIALS: ${{secrets.AZURE_CREDENTIALS}}

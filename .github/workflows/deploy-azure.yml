@@ -4,6 +4,9 @@ name: deploy-AKS
 on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_call:
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
 
 # Environment variables available to all jobs and steps in this workflow
 env:
