@@ -4,10 +4,11 @@ on:
     branches:
       - dev
 jobs:
-  build:
+  build-auth:
     uses: ${{ github.workspace }}/.github/workflows/build-auth.yml@dev
+  build-exchange:
     uses: ${{ github.workspace }}/.github/workflows/build-exchange.yml@dev
+  build-gateway:
     uses: ${{ github.workspace }}/.github/workflows/build-gateway.yml@dev
   deploy:
-    needs: build
     uses: ${{ github.workspace }}/.github/workflows/deploy-azure.yml@dev
