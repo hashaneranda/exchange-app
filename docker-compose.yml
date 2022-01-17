@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  gateway:
+    build: ./api-gateway
+    image: microservice/exchange/gateway
+    restart: "no"
+    hostname: gateway
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+      - frontend
+
+  auth-service:
+    build: ./service-auth
+    image: microservice/exchange/auth
+    restart: "no"
+    hostname: auth
+    env_file:
+      - .env
+    networks:
+      - backend
+
+  exchange-service:
+    build: ./service-exchange
+    image: microservice/exchange/exchange
+    restart: "no"
+    hostname: exchange
+    env_file:
+      - .env
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+  frontend:
+    external:
+      name: infrastructure-data
