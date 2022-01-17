@@ -12,5 +12,6 @@ jobs:
       - uses: ./.github/workflows/build-gateway.yml@dev
   deploy:
     needs: build
+    runs-on: ubuntu-latest
     steps:
       - uses: ./.github/workflows/deploy-azure.yml@dev
