@@ -1,12 +1,21 @@
 name: deploy-AKS
+
+# Controls when the action will run.
 on:
-  workflow_dispatch:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_call:
+    inputs:
+      NAMESPACE:
+        required: true
+        type: string
+    secrets:
+      AZURE_CREDENTIALS:
+        required: true
 
 # Environment variables available to all jobs and steps in this workflow
 env:
   CLUSTER_NAME: exchange-cluster
   CLUSTER_RESOURCE_GROUP: cloudcw
-  NAMESPACE: dev
 
 permissions:
   id-token: write
@@ -18,13 +27,7 @@ jobs:
     name: deploy
     # needs: [build]
     steps:
-      - uses: actions/checkout@v2
-      - name: "Az CLI login"
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+      - uses: actions/checkout@main
 
         # Set the target Azure Kubernetes Service (AKS) cluster.
       - uses: azure/aks-set-context@v1
@@ -36,11 +39,11 @@ jobs:
 
         # Create namespace if doesn't exist
       - run: |
-          kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -
+          kubectl create namespace ${{ inputs.NAMESPACE }} --dry-run=client -o json | kubectl apply -f -
 
         # Create env
       - run: |
-          kubectl create secret generic exchange-secret --from-env-file=${{ github.workspace }}/deployment/env.txt
+          kubectl create secret generic exchange-secret --from-env-file=${{ github.workspace }}/deployment/env.txt --dry-run=client -o json
 
         # Deploy app to AKS
       - uses: azure/k8s-deploy@v1
@@ -53,4 +56,4 @@ jobs:
             ${{ github.workspace }}/deployment/ingress.yaml
           images: |
             ghcr.io/${{ github.repository_owner }}/container-apps
-          namespace: ${{ env.NAMESPACE }}
+          namespace: ${{ inputs.NAMESPACE }}

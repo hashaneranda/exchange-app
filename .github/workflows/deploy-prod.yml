@@ -1,0 +1,21 @@
+name: Prod Workflow
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-auth:
+    uses: hashaneranda/exchange-app/.github/workflows/build-auth.yml@main
+  build-exchange:
+    needs: build-auth
+    uses: hashaneranda/exchange-app/.github/workflows/build-exchange.yml@main
+  build-gateway:
+    needs: build-exchange
+    uses: hashaneranda/exchange-app/.github/workflows/build-gateway.yml@main
+  deploy:
+    needs: build-gateway
+    uses: hashaneranda/exchange-app/.github/workflows/deploy-azure.yml@main
+    with:
+      NAMESPACE: main
+    secrets:
+      AZURE_CREDENTIALS: ${{secrets.AZURE_CREDENTIALS}}

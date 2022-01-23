@@ -1,0 +1,21 @@
+name: Test Workflow
+on:
+  push:
+    branches:
+      - test
+jobs:
+  build-auth:
+    uses: hashaneranda/exchange-app/.github/workflows/build-auth.yml@test
+  build-exchange:
+    needs: build-auth
+    uses: hashaneranda/exchange-app/.github/workflows/build-exchange.yml@test
+  build-gateway:
+    needs: build-exchange
+    uses: hashaneranda/exchange-app/.github/workflows/build-gateway.yml@test
+  deploy:
+    needs: build-gateway
+    uses: hashaneranda/exchange-app/.github/workflows/deploy-azure.yml@test
+    with:
+      NAMESPACE: test
+    secrets:
+      AZURE_CREDENTIALS: ${{secrets.AZURE_CREDENTIALS}}
