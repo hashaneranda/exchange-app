@@ -11,7 +11,7 @@ import { AppService } from './app.service';
         transport: Transport.TCP,
         options: {
           host: process.env.EXCHANGE_SERVICE_HOST,
-          port: Number(process.env.EXCHANGE_SERVICE_PORT),
+          // port: Number(process.env.EXCHANGE_SERVICE_PORT),
         },
       },
       {
@@ -19,7 +19,7 @@ import { AppService } from './app.service';
         transport: Transport.TCP,
         options: {
           host: process.env.AUTH_SERVICE_HOST,
-          port: Number(process.env.AUTH_SERVICE_PORT),
+          // port: Number(process.env.AUTH_SERVICE_PORT),
         },
       },
     ]),

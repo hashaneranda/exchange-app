@@ -15,7 +15,7 @@ async function bootstrap() {
   });
   app.listen(() =>
     logger.log(
-      'Microservice Auth is listening on' + process.env.AUTH_SERVICE_PORT,
+      `Microservice Auth is listening on ${process.env.AUTH_SERVICE_HOST}:${process.env.AUTH_SERVICE_PORT}`,
     ),
   );
 }

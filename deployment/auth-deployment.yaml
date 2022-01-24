@@ -18,19 +18,27 @@ spec:
       containers:
         - name: auth
           image: ghcr.io/hashaneranda/container-apps/exchange/auth:main
-          envFrom:
-            - secretRef:
-                name: exchange-secret
+          env:
+            - name: API_GATEWAY_PORT
+              value: 3000
+            - name: AUTH_SERVICE_PORT
+              value: 8001
+            - name: AUTH_SERVICE_HOST
+              value: auth.kubernetes.internal
+            - name: EXCHANGE_SERVICE_PORT
+              value: 8002
+            - name: EXCHANGE_SERVICE_HOST
+              value: exchange.kubernetes.internal
           ports:
             - containerPort: 8001
           imagePullPolicy: Always
           resources:
-            limits:
-              cpu: 100m
-              memory: 200Mi
             requests:
-              cpu: 100m
-              memory: 100Mi
+              cpu: "0.2"
+              memory: 300Mi
+            limits:
+              cpu: "1.0"
+              memory: 300Mi
       serviceAccountName: default
 
 ---

@@ -13,6 +13,10 @@ async function bootstrap() {
       port: process.env.EXCHANGE_SERVICE_PORT,
     },
   });
-  app.listen(() => logger.log('Microservice A is listening'));
+  app.listen(() =>
+    logger.log(
+      `Exchange Microservice is listening on ${process.env.EXCHANGE_SERVICE_HOST}:${process.env.EXCHANGE_SERVICE_PORT}`,
+    ),
+  );
 }
 bootstrap();
