@@ -20,13 +20,13 @@ spec:
           image: ghcr.io/hashaneranda/container-apps/exchange/auth:main
           env:
             - name: API_GATEWAY_PORT
-              value: 3000
+              value: "3000"
             - name: AUTH_SERVICE_PORT
-              value: 8001
+              value: "8001"
             - name: AUTH_SERVICE_HOST
               value: auth.kubernetes.internal
             - name: EXCHANGE_SERVICE_PORT
-              value: 8002
+              value: "8002"
             - name: EXCHANGE_SERVICE_HOST
               value: exchange.kubernetes.internal
           ports:
